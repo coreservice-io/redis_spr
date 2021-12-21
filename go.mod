@@ -2,10 +2,7 @@ module github.com/universe-30/USpr
 
 go 1.17
 
-require (
-	github.com/go-redis/redis/v8 v8.11.4
-	github.com/universe-30/USafeGo v0.1.1
-)
+require github.com/go-redis/redis/v8 v8.11.4
 
 require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect

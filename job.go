@@ -4,13 +4,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"github.com/universe-30/USafeGo"
 	"math/rand"
 	"time"
 )
 
-const LoopIntervalSec = 15
-const MasterKeepTime = 90
+const loopIntervalSec = 15
+const masterKeepTime = 90
 
 type SprJob struct {
 	JobName         string
@@ -31,7 +30,7 @@ func newJob(name string, sprMgr *SprJobMgr) *SprJob {
 		JobName:         "spr:" + name,
 		IsMaster:        false,
 		JobRand:         fmt.Sprintf("%d", rand.Intn(100000000)+1),
-		LoopIntervalSec: LoopIntervalSec,
+		LoopIntervalSec: loopIntervalSec,
 		StopFlag:        false,
 		LastRuntime:     0,
 		sprJobMgr:       sprMgr,
@@ -40,7 +39,7 @@ func newJob(name string, sprMgr *SprJobMgr) *SprJob {
 }
 
 func (s *SprJob) startLoop() {
-	USafeGo.GoInfiniteLoop(func() bool {
+	goInfiniteLoop(func() bool {
 		if s.StopFlag {
 			return false
 		}
@@ -75,19 +74,59 @@ func (s *SprJob) run() {
 		//value==jobRand
 		//keep master token
 		s.IsMaster = true
-		s.sprJobMgr.redisClient.Expire(context.Background(), s.JobName, time.Second*time.Duration(MasterKeepTime))
+		s.sprJobMgr.redisClient.Expire(context.Background(), s.JobName, time.Second*time.Duration(masterKeepTime))
 
 	} else if err == redis.Nil {
 		//if no value
-		success, err := s.sprJobMgr.redisClient.SetNX(context.Background(), s.JobName, s.JobRand, time.Second*time.Duration(MasterKeepTime)).Result()
-		if err != nil || !success {
+		success, err := s.sprJobMgr.redisClient.SetNX(context.Background(), s.JobName, s.JobRand, time.Second*time.Duration(masterKeepTime)).Result()
+		if !success {
 			s.IsMaster = false
+			if err != nil {
+				//todo log err?
+				//log.Println(err)
+			}
 			return
 		}
 		s.IsMaster = true
 	} else {
 		//other err
+		//todo log err?
+		//log.Println(err)
 		s.IsMaster = false
 		return
 	}
+}
+
+func goInfiniteLoop(function func() bool, onPanic func(err interface{}), interval int, redoDelaySec int) {
+	runToken := make(chan struct{})
+	stopSignal := make(chan struct{})
+	go func() {
+		for {
+			select {
+			case <-runToken:
+				go func() {
+					defer func() {
+						if err := recover(); err != nil {
+							if onPanic != nil {
+								onPanic(err)
+							}
+							time.Sleep(time.Duration(redoDelaySec) * time.Second)
+							runToken <- struct{}{}
+						}
+					}()
+					for {
+						isGoOn := function()
+						if !isGoOn {
+							stopSignal <- struct{}{}
+							return
+						}
+						time.Sleep(time.Duration(interval) * time.Second)
+					}
+				}()
+			case <-stopSignal:
+				return
+			}
+		}
+	}()
+	runToken <- struct{}{}
 }
