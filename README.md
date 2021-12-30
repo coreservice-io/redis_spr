@@ -30,9 +30,11 @@ func main() {
 
 	// setLogLevel default is InfoLevel
 	sprJobMgr.SetLevel(ULog.DebugLevel)
-	// or use SetOutPut(w io.Writer) log to file or other target
-	
-	
+	//USpr use package github.com/universe-30/ULog as default logger
+	//You can log to other target by using function SetOutPut(w io.Writer)
+	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
+
+
 
 	// use function AddSprJob("jobName") to add a single process run job
 	err = sprJobMgr.AddSprJob("testJob1")
