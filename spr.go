@@ -2,15 +2,20 @@ package USpr
 
 import (
 	"errors"
-	"github.com/go-redis/redis/v8"
+	"io"
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/go-redis/redis/v8"
+	"github.com/universe-30/ULog"
 )
 
 type SprJobMgr struct {
 	jobMap      sync.Map
 	redisClient *redis.ClusterClient
+
+	logger ULog.Logger
 }
 
 type RedisConfig struct {
@@ -31,9 +36,22 @@ func New(config RedisConfig) (*SprJobMgr, error) {
 	}
 	sMgr := &SprJobMgr{
 		redisClient: rds,
+		logger:      ULog.New(),
 	}
 
 	return sMgr, nil
+}
+
+func (smgr *SprJobMgr) SetOutPut(w io.Writer) {
+	smgr.logger.SetOutput(w)
+}
+
+func (smgr *SprJobMgr) SetLevel(v ULog.LogLevel) {
+	smgr.logger.SetLevel(v)
+}
+
+func (smgr *SprJobMgr) SetLogger(logger ULog.Logger) {
+	smgr.logger = logger
 }
 
 func (smgr *SprJobMgr) AddSprJob(jobName string) error {
@@ -63,6 +81,7 @@ func (smgr *SprJobMgr) RemoveSprJob(jobName string) {
 func (smgr *SprJobMgr) IsMaster(jobName string) bool {
 	job, exist := smgr.jobMap.Load(jobName)
 	if !exist {
+		smgr.logger.Debug(jobName, "is not exist")
 		return false
 	}
 	return job.(*SprJob).IsMaster

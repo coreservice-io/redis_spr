@@ -3,9 +3,10 @@ package USpr
 import (
 	"context"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"math/rand"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 const loopIntervalSec = 15
@@ -82,16 +83,14 @@ func (s *SprJob) run() {
 		if !success {
 			s.IsMaster = false
 			if err != nil {
-				//todo log err?
-				//log.Println(err)
+				s.sprJobMgr.logger.Error("<USpr>", err)
 			}
 			return
 		}
 		s.IsMaster = true
 	} else {
 		//other err
-		//todo log err?
-		//log.Println(err)
+		s.sprJobMgr.logger.Error("<USpr>", err)
 		s.IsMaster = false
 		return
 	}
