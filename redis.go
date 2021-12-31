@@ -1,9 +1,10 @@
-package USpr
+package URedisSpr
 
 import (
 	"context"
-	"github.com/go-redis/redis/v8"
 	"strconv"
+
+	"github.com/go-redis/redis/v8"
 )
 
 func initRedisClient(addr string, port int, userName string, password string) (redisClient *redis.ClusterClient, err error) {

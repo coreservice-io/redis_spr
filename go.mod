@@ -1,10 +1,10 @@
-module github.com/universe-30/USpr
+module github.com/universe-30/URedisSpr
 
 go 1.17
 
 require (
 	github.com/go-redis/redis/v8 v8.11.4
-	github.com/universe-30/ULog v0.1.3
+	github.com/universe-30/ULog v0.1.4
 )
 
 require (

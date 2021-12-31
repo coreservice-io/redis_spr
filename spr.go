@@ -1,4 +1,4 @@
-package USpr
+package URedisSpr
 
 import (
 	"errors"
@@ -81,7 +81,7 @@ func (smgr *SprJobMgr) RemoveSprJob(jobName string) {
 func (smgr *SprJobMgr) IsMaster(jobName string) bool {
 	job, exist := smgr.jobMap.Load(jobName)
 	if !exist {
-		smgr.logger.Debug(jobName, "is not exist")
+		smgr.logger.Debugln(jobName, "is not exist")
 		return false
 	}
 	return job.(*SprJob).IsMaster

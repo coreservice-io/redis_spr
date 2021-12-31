@@ -1,4 +1,4 @@
-package USpr
+package URedisSpr
 
 import (
 	"context"
@@ -83,14 +83,14 @@ func (s *SprJob) run() {
 		if !success {
 			s.IsMaster = false
 			if err != nil {
-				s.sprJobMgr.logger.Error("<USpr>", err)
+				s.sprJobMgr.logger.Errorln("<USpr>", err)
 			}
 			return
 		}
 		s.IsMaster = true
 	} else {
 		//other err
-		s.sprJobMgr.logger.Error("<USpr>", err)
+		s.sprJobMgr.logger.Errorln("<USpr>", err)
 		s.IsMaster = false
 		return
 	}
