@@ -15,12 +15,12 @@ import (
 	"time"
 
 	"github.com/universe-30/ULog"
-	"github.com/universe-30/USpr"
+	"github.com/universe-30/URedisSpr"
 )
 
 func main() {
 	// new instance, input RedisInfo
-	sprJobMgr, err := USpr.New(USpr.RedisConfig{
+	sprJobMgr, err := URedisSpr.New(URedisSpr.RedisConfig{
 		Addr: "127.0.0.1",
 		Port: 6379,
 	})
