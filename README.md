@@ -1,10 +1,10 @@
-# USpr
+# URedisSpr
 
 Make sure specific job can only be run over 1 process among different machines and different process. If some process is killed or stucked, the job will be switched to other process on some machine.
 
 ### usage
 ```
-go get "github.com/universe-30/USpr"
+go get "github.com/universe-30/URedisSpr"
 ```
 
 ```go
