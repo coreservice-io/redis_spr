@@ -1,4 +1,4 @@
-module github.com/universe-30/URedisSpr
+module github.com/universe-30/RedisSpr
 
 go 1.17
 

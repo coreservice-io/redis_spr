@@ -1,4 +1,4 @@
-package URedisSpr
+package RedisSpr
 
 import (
 	"errors"
