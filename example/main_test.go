@@ -1,14 +1,15 @@
-package main
+package example
 
 import (
 	"log"
+	"testing"
 	"time"
 
 	"github.com/universe-30/ULog"
 	"github.com/universe-30/URedisSpr"
 )
 
-func main() {
+func Test_main(t *testing.T) {
 	sprJobMgr, err := URedisSpr.New(URedisSpr.RedisConfig{
 		Addr: "127.0.0.1",
 		Port: 6379,
