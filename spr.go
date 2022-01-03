@@ -2,7 +2,6 @@ package RedisSpr
 
 import (
 	"errors"
-	"io"
 	"math/rand"
 	"sync"
 	"time"
@@ -36,22 +35,18 @@ func New(config RedisConfig) (*SprJobMgr, error) {
 	}
 	sMgr := &SprJobMgr{
 		redisClient: rds,
-		logger:      ULog.New(),
+		logger:      ULog.NewBaseLogger(),
 	}
 
 	return sMgr, nil
 }
 
-func (smgr *SprJobMgr) SetOutPut(w io.Writer) {
-	smgr.logger.SetOutput(w)
-}
-
-func (smgr *SprJobMgr) SetLevel(v ULog.LogLevel) {
-	smgr.logger.SetLevel(v)
-}
-
 func (smgr *SprJobMgr) SetLogger(logger ULog.Logger) {
 	smgr.logger = logger
+}
+
+func (smgr *SprJobMgr) GetLogger() ULog.Logger {
+	return smgr.logger
 }
 
 func (smgr *SprJobMgr) AddSprJob(jobName string) error {
