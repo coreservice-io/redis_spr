@@ -1,6 +1,6 @@
 # RedisSpr
 
-Make sure specific job can only be run over 1 process among different machines and different process. If some process is killed or stucked, the job will be switched to other process on some machine.
+Make sure specific job can only be run over 1 process among all machines and processes. If some process is killed or crashed, the job will be switched to other process on some machine.
 
 ### usage
 ```
@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/universe-30/RedisSpr"
-	"github.com/universe-30/ULog"
 )
 
 func main() {
@@ -27,11 +26,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	sprJobMgr.GetLogger().SetLevel(ULog.DebugLevel)
-	//USpr use package github.com/universe-30/ULog as default logger
-	//You can log to other target by using function SetOutPut(w io.Writer)
 	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
-
 	err = sprJobMgr.AddSprJob("testJob1")
 	if err != nil {
 		log.Println(err)

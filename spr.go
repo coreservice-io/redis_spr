@@ -35,17 +35,17 @@ func New(config RedisConfig) (*SprJobMgr, error) {
 	}
 	sMgr := &SprJobMgr{
 		redisClient: rds,
-		logger:      ULog.NewBaseLogger(),
+		logger:      nil,
 	}
 
 	return sMgr, nil
 }
 
-func (smgr *SprJobMgr) SetLogger(logger ULog.Logger) {
+func (smgr *SprJobMgr) SetULogger(logger ULog.Logger) {
 	smgr.logger = logger
 }
 
-func (smgr *SprJobMgr) GetLogger() ULog.Logger {
+func (smgr *SprJobMgr) GetULogger() ULog.Logger {
 	return smgr.logger
 }
 
@@ -76,7 +76,9 @@ func (smgr *SprJobMgr) RemoveSprJob(jobName string) {
 func (smgr *SprJobMgr) IsMaster(jobName string) bool {
 	job, exist := smgr.jobMap.Load(jobName)
 	if !exist {
-		smgr.logger.Debugln(jobName, "is not exist")
+		if smgr.logger != nil {
+			smgr.logger.Debugln(jobName, "is not exist")
+		}
 		return false
 	}
 	return job.(*SprJob).IsMaster

@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/universe-30/RedisSpr"
-	"github.com/universe-30/ULog"
 )
 
 func main() {
@@ -17,11 +16,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	sprJobMgr.GetLogger().SetLevel(ULog.DebugLevel)
-	//USpr use package github.com/universe-30/ULog as default logger
-	//You can log to other target by using function SetOutPut(w io.Writer)
 	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
-
 	err = sprJobMgr.AddSprJob("testJob1")
 	if err != nil {
 		log.Println(err)

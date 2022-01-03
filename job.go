@@ -82,7 +82,7 @@ func (s *SprJob) run() {
 		success, err := s.sprJobMgr.redisClient.SetNX(context.Background(), s.JobName, s.JobRand, time.Second*time.Duration(masterKeepTime)).Result()
 		if !success {
 			s.IsMaster = false
-			if err != nil {
+			if err != nil && s.sprJobMgr.logger != nil {
 				s.sprJobMgr.logger.Errorln("<USpr>", err)
 			}
 			return
@@ -90,7 +90,9 @@ func (s *SprJob) run() {
 		s.IsMaster = true
 	} else {
 		//other err
-		s.sprJobMgr.logger.Errorln("<USpr>", err)
+		if s.sprJobMgr.logger != nil {
+			s.sprJobMgr.logger.Errorln("<USpr>", err)
+		}
 		s.IsMaster = false
 		return
 	}
