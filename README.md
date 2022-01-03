@@ -27,7 +27,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	sprJobMgr.SetLevel(ULog.DebugLevel)
+	sprJobMgr.GetLogger().SetLevel(ULog.DebugLevel)
 	//USpr use package github.com/universe-30/ULog as default logger
 	//You can log to other target by using function SetOutPut(w io.Writer)
 	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
@@ -59,5 +59,6 @@ func main() {
 
 	time.Sleep(1 * time.Hour)
 }
+
 
 ```
