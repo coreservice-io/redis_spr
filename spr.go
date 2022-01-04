@@ -77,7 +77,7 @@ func (smgr *SprJobMgr) IsMaster(jobName string) bool {
 	job, exist := smgr.jobMap.Load(jobName)
 	if !exist {
 		if smgr.logger != nil {
-			smgr.logger.Debugln(jobName, "is not exist")
+			smgr.logger.Debugln("<USpr>", jobName, "is not exist")
 		}
 		return false
 	}
