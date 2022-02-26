@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/coreservice-io/ULog"
 	"github.com/go-redis/redis/v8"
-	"github.com/universe-30/ULog"
 )
 
 type SprJobMgr struct {

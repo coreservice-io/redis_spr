@@ -14,7 +14,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/universe-30/RedisSpr"
+	"github.com/coreservice-io/RedisSpr"
 )
 
 func main() {

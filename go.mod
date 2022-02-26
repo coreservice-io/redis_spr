@@ -1,10 +1,10 @@
-module github.com/universe-30/RedisSpr
+module github.com/coreservice-io/RedisSpr
 
 go 1.17
 
 require (
+	github.com/coreservice-io/ULog v0.1.16
 	github.com/go-redis/redis/v8 v8.11.4
-	github.com/universe-30/ULog v0.1.15
 )
 
 require (
