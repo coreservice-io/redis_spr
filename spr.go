@@ -3,6 +3,7 @@ package RedisSpr
 import (
 	"errors"
 	"math/rand"
+	"strings"
 	"sync"
 	"time"
 
@@ -13,8 +14,8 @@ import (
 type SprJobMgr struct {
 	jobMap      sync.Map
 	redisClient *redis.ClusterClient
-
-	logger ULog.Logger
+	prefix      string
+	logger      ULog.Logger
 }
 
 type RedisConfig struct {
@@ -22,6 +23,7 @@ type RedisConfig struct {
 	Port     int
 	UserName string
 	Password string
+	Prefix   string
 }
 
 func init() {
@@ -29,6 +31,12 @@ func init() {
 }
 
 func New(config RedisConfig) (*SprJobMgr, error) {
+	prefix := strings.TrimSuffix(config.Prefix, ":")
+
+	if prefix == "" {
+		return nil, errors.New("redis key prefix error")
+	}
+
 	rds, err := initRedisClient(config.Addr, config.Port, config.UserName, config.Password)
 	if err != nil {
 		return nil, errors.New("redis connect error")
@@ -36,6 +44,7 @@ func New(config RedisConfig) (*SprJobMgr, error) {
 	sMgr := &SprJobMgr{
 		redisClient: rds,
 		logger:      nil,
+		prefix:      prefix + ":",
 	}
 
 	return sMgr, nil

@@ -28,7 +28,7 @@ func init() {
 
 func newJob(name string, sprMgr *SprJobMgr) *SprJob {
 	s := &SprJob{
-		JobName:         "spr:" + name,
+		JobName:         sprMgr.prefix + "spr:" + name,
 		IsMaster:        false,
 		JobRand:         fmt.Sprintf("%d", rand.Intn(100000000)+1),
 		LoopIntervalSec: loopIntervalSec,

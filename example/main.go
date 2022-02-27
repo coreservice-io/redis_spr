@@ -9,8 +9,9 @@ import (
 
 func main() {
 	sprJobMgr, err := RedisSpr.New(RedisSpr.RedisConfig{
-		Addr: "127.0.0.1",
-		Port: 6379,
+		Addr:   "127.0.0.1",
+		Port:   6379,
+		Prefix: "sprExample",
 	})
 	if err != nil {
 		log.Fatalln(err)
