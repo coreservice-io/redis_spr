@@ -8,15 +8,19 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-func initRedisClient(addr string, port int, userName string, password string) (redisClient *redis.ClusterClient, err error) {
-	redisClient = redis.NewClusterClient(&redis.ClusterOptions{
+func initRedisClient(addr string, port int, userName string, password string, useTls bool) (redisClient *redis.ClusterClient, err error) {
+	config := &redis.ClusterOptions{
 		Addrs:    []string{addr + ":" + strconv.Itoa(port)},
 		Username: userName,
 		Password: password,
-		TLSConfig: &tls.Config{
+	}
+	if useTls {
+		config.TLSConfig = &tls.Config{
 			InsecureSkipVerify: true,
-		},
-	})
+		}
+	}
+
+	redisClient = redis.NewClusterClient(config)
 
 	_, err = redisClient.Ping(context.Background()).Result()
 	if err != nil {

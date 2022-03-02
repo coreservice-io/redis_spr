@@ -24,6 +24,7 @@ type RedisConfig struct {
 	UserName string
 	Password string
 	Prefix   string
+	UseTLS   bool
 }
 
 func init() {
@@ -31,7 +32,7 @@ func init() {
 }
 
 func New(config RedisConfig) (*SprJobMgr, error) {
-	rds, err := initRedisClient(config.Addr, config.Port, config.UserName, config.Password)
+	rds, err := initRedisClient(config.Addr, config.Port, config.UserName, config.Password, config.UseTLS)
 	if err != nil {
 		return nil, errors.New("redis connect error")
 	}
