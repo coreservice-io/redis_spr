@@ -31,20 +31,20 @@ func init() {
 }
 
 func New(config RedisConfig) (*SprJobMgr, error) {
-	prefix := strings.TrimSuffix(config.Prefix, ":")
-
-	if prefix == "" {
-		return nil, errors.New("redis key prefix error")
-	}
-
 	rds, err := initRedisClient(config.Addr, config.Port, config.UserName, config.Password)
 	if err != nil {
 		return nil, errors.New("redis connect error")
 	}
+
+	prefix := config.Prefix
+	if prefix != "" && !strings.HasSuffix(prefix, ":") {
+		prefix = prefix + ":"
+	}
+
 	sMgr := &SprJobMgr{
 		redisClient: rds,
 		logger:      nil,
-		prefix:      prefix + ":",
+		prefix:      prefix,
 	}
 
 	return sMgr, nil
