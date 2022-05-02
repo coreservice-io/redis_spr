@@ -1,4 +1,4 @@
-# RedisSpr
+# redis_spr
 
 Make sure specific job can only be run over 1 process among all machines and processes. If some process is killed or crashed, the job will be switched to other process on some machine.
 
