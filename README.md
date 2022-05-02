@@ -14,13 +14,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/coreservice-io/RedisSpr"
+	"github.com/coreservice-io/redis_spr"
 )
 
 func main() {
-	sprJobMgr, err := RedisSpr.New(RedisSpr.RedisConfig{
-		Addr: "127.0.0.1",
-		Port: 6379,
+	sprJobMgr, err := redis_spr.New(redis_spr.RedisConfig{
+		Addr:   "127.0.0.1",
+		Port:   6379,
+		Prefix: "sprExample",
 	})
 	if err != nil {
 		log.Fatalln(err)
@@ -54,6 +55,4 @@ func main() {
 
 	time.Sleep(1 * time.Hour)
 }
-
-
 ```
