@@ -4,11 +4,11 @@ import (
 	"log"
 	"time"
 
-	"github.com/coreservice-io/RedisSpr"
+	"github.com/coreservice-io/redis_spr"
 )
 
 func main() {
-	sprJobMgr, err := RedisSpr.New(RedisSpr.RedisConfig{
+	sprJobMgr, err := redis_spr.New(redis_spr.RedisConfig{
 		Addr:   "127.0.0.1",
 		Port:   6379,
 		Prefix: "sprExample",
@@ -17,7 +17,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
+	//or use function SetLogger(logger log.Logger) to use your own logger which implemented the log.Logger interface
 	err = sprJobMgr.AddSprJob("testJob1")
 	if err != nil {
 		log.Println(err)

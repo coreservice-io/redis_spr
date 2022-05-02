@@ -1,9 +1,9 @@
-module github.com/coreservice-io/RedisSpr
+module github.com/coreservice-io/redis_spr
 
 go 1.17
 
 require (
-	github.com/coreservice-io/ULog v0.1.16
+	github.com/coreservice-io/log v0.1.18
 	github.com/go-redis/redis/v8 v8.11.4
 )
 

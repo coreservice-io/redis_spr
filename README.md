@@ -4,7 +4,7 @@ Make sure specific job can only be run over 1 process among all machines and pro
 
 ### usage
 ```
-go get "github.com/universe-30/URedisSpr"
+go get "github.com/universe-30/redis_spr"
 ```
 
 ```go
@@ -26,7 +26,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	//or use function SetLogger(logger ULog.Logger) to use your own logger which implemented the ULog.Logger interface
+	//or use function SetLogger(logger log.Logger) to use your own logger which implemented the log.Logger interface
 	err = sprJobMgr.AddSprJob("testJob1")
 	if err != nil {
 		log.Println(err)

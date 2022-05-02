@@ -1,4 +1,4 @@
-package RedisSpr
+package redis_spr
 
 import (
 	"context"

@@ -1,4 +1,4 @@
-package RedisSpr
+package redis_spr
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/coreservice-io/ULog"
+	"github.com/coreservice-io/log"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -15,7 +15,7 @@ type SprJobMgr struct {
 	jobMap      sync.Map
 	redisClient *redis.ClusterClient
 	prefix      string
-	logger      ULog.Logger
+	logger      log.Logger
 }
 
 type RedisConfig struct {
@@ -51,11 +51,11 @@ func New(config RedisConfig) (*SprJobMgr, error) {
 	return sMgr, nil
 }
 
-func (smgr *SprJobMgr) SetULogger(logger ULog.Logger) {
+func (smgr *SprJobMgr) SetLogger(logger log.Logger) {
 	smgr.logger = logger
 }
 
-func (smgr *SprJobMgr) GetULogger() ULog.Logger {
+func (smgr *SprJobMgr) GetLogger() log.Logger {
 	return smgr.logger
 }
 
