@@ -45,6 +45,7 @@ func (s *SprJob) startLoop() {
 		select {
 		case <-s.Ctx.Done():
 			s.IsMaster = false
+			s.sprJobMgr.jobMap.Delete(s.JobName)
 			return false
 		default:
 			s.run()
@@ -52,6 +53,10 @@ func (s *SprJob) startLoop() {
 		}
 	}, nil, s.LoopIntervalSec, redoDelaySecs)
 }
+
+// func (s *SprJob) stopLoop() {
+// 	s.IsMaster = false
+// }
 
 func (s *SprJob) run() {
 
