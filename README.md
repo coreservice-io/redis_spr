@@ -8,8 +8,7 @@ go get "github.com/universe-30/redis_spr"
 ```
 
 ```go
-
-package main
+ package main
 
 import (
 	"context"
@@ -48,12 +47,6 @@ func main() {
 			log.Println("testjob2 is master:", sprJobMgr.IsMaster("testJob2"))
 		}
 	}()
-
-	// use function RemoveSprJob("jobName") to remove the job
-	// removed job always return false when use IsMaster("jobName")
-	time.AfterFunc(time.Second*25, func() {
-		sprJobMgr.RemoveSprJob("testJob2")
-	})
 
 	time.Sleep(1 * time.Hour)
 }
