@@ -44,16 +44,13 @@ func (s *SprJob) startLoop() {
 	goInfiniteLoop(func() bool {
 		select {
 		case <-s.Ctx.Done():
+			s.IsMaster = false
 			return false
 		default:
 			s.run()
 			return true
 		}
 	}, nil, s.LoopIntervalSec, redoDelaySecs)
-}
-
-func (s *SprJob) stopLoop() {
-	s.IsMaster = false
 }
 
 func (s *SprJob) run() {

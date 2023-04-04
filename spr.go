@@ -73,17 +73,6 @@ func (smgr *SprJobMgr) AddSprJob(ctx context.Context, jobName string) error {
 	return nil
 }
 
-func (smgr *SprJobMgr) RemoveSprJob(jobName string) {
-	job, exist := smgr.jobMap.Load(jobName)
-	if !exist {
-		return
-	}
-	//stop
-	job.(*SprJob).stopLoop()
-	//delete
-	smgr.jobMap.Delete(jobName)
-}
-
 func (smgr *SprJobMgr) IsMaster(jobName string) bool {
 	job, exist := smgr.jobMap.Load(jobName)
 	if !exist {

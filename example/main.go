@@ -38,11 +38,5 @@ func main() {
 		}
 	}()
 
-	// use function RemoveSprJob("jobName") to remove the job
-	// removed job always return false when use IsMaster("jobName")
-	time.AfterFunc(time.Second*25, func() {
-		sprJobMgr.RemoveSprJob("testJob2")
-	})
-
 	time.Sleep(1 * time.Hour)
 }
