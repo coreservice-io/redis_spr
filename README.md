@@ -8,9 +8,11 @@ go get "github.com/universe-30/redis_spr"
 ```
 
 ```go
+
 package main
 
 import (
+	"context"
 	"log"
 	"time"
 
@@ -28,11 +30,11 @@ func main() {
 	}
 
 	//or use function SetLogger(logger log.Logger) to use your own logger which implemented the log.Logger interface
-	err = sprJobMgr.AddSprJob("testJob1")
+	err = sprJobMgr.AddSprJob(context.Background(), "testJob1")
 	if err != nil {
 		log.Println(err)
 	}
-	err = sprJobMgr.AddSprJob("testJob2")
+	err = sprJobMgr.AddSprJob(context.Background(), "testJob2")
 	if err != nil {
 		log.Println(err)
 	}
@@ -55,4 +57,6 @@ func main() {
 
 	time.Sleep(1 * time.Hour)
 }
+
+
 ```

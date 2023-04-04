@@ -60,13 +60,13 @@ func (smgr *SprJobMgr) GetLogger() log.Logger {
 	return smgr.logger
 }
 
-func (smgr *SprJobMgr) AddSprJob(jobName string) error {
+func (smgr *SprJobMgr) AddSprJob(ctx context.Context, jobName string) error {
 	_, exist := smgr.jobMap.Load(jobName)
 	if exist {
 		return errors.New("job already exist")
 	}
 	//new job
-	job := newJob(context.Background(), jobName, smgr)
+	job := newJob(ctx, jobName, smgr)
 	smgr.jobMap.Store(jobName, job)
 	//start loop
 	job.startLoop()
