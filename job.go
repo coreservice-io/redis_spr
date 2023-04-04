@@ -10,6 +10,7 @@ import (
 )
 
 const loopIntervalSec = 15
+const redoDelaySecs = 15
 const masterKeepTime = 90
 
 type SprJob struct {
@@ -17,7 +18,7 @@ type SprJob struct {
 	IsMaster        bool
 	JobRand         string
 	LoopIntervalSec int
-	StopFlag        bool
+	Ctx             context.Context
 	LastRuntime     int64
 	sprJobMgr       *SprJobMgr
 }
@@ -26,42 +27,43 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func newJob(name string, sprMgr *SprJobMgr) *SprJob {
+func newJob(ctx context.Context, name string, sprMgr *SprJobMgr) *SprJob {
 	s := &SprJob{
 		JobName:         sprMgr.prefix + "spr:" + name,
 		IsMaster:        false,
 		JobRand:         fmt.Sprintf("%d", rand.Intn(100000000)+1),
 		LoopIntervalSec: loopIntervalSec,
-		StopFlag:        false,
 		LastRuntime:     0,
 		sprJobMgr:       sprMgr,
+		Ctx:             ctx,
 	}
 	return s
 }
 
 func (s *SprJob) startLoop() {
 	goInfiniteLoop(func() bool {
-		if s.StopFlag {
+		select {
+		case <-s.Ctx.Done():
 			return false
+		default:
+			s.run()
+			return true
 		}
-		s.run()
-		return true
-	}, nil, s.LoopIntervalSec, 15)
+	}, nil, s.LoopIntervalSec, redoDelaySecs)
 }
 
 func (s *SprJob) stopLoop() {
-	s.StopFlag = true
 	s.IsMaster = false
 }
 
 func (s *SprJob) run() {
-	//log.Println(s.JobName, "loop job run")
+
 	if s.sprJobMgr.redisClient == nil {
 		s.IsMaster = false
 		return
 	}
 
-	//check jobname in redis
+	//check job name in redis
 	value, err := s.sprJobMgr.redisClient.Get(context.Background(), s.JobName).Result()
 
 	//get value

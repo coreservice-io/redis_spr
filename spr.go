@@ -1,6 +1,7 @@
 package redis_spr
 
 import (
+	"context"
 	"errors"
 	"math/rand"
 	"strings"
@@ -65,7 +66,7 @@ func (smgr *SprJobMgr) AddSprJob(jobName string) error {
 		return errors.New("job already exist")
 	}
 	//new job
-	job := newJob(jobName, smgr)
+	job := newJob(context.Background(), jobName, smgr)
 	smgr.jobMap.Store(jobName, job)
 	//start loop
 	job.startLoop()
