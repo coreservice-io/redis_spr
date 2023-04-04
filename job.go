@@ -54,10 +54,6 @@ func (s *SprJob) startLoop() {
 	}, nil, s.LoopIntervalSec, redoDelaySecs)
 }
 
-// func (s *SprJob) stopLoop() {
-// 	s.IsMaster = false
-// }
-
 func (s *SprJob) run() {
 
 	if s.sprJobMgr.redisClient == nil {
